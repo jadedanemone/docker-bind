@@ -30,6 +30,7 @@ WEBMIN_ENABLED=${WEBMIN_ENABLED:-true}
 WEBMIN_INIT_SSL_ENABLED=${WEBMIN_INIT_SSL_ENABLED:-true}
 WEBMIN_INIT_REDIRECT_PORT=${WEBMIN_INIT_REDIRECT_PORT:-10000}
 WEBMIN_INIT_REFERERS=${WEBMIN_INIT_REFERERS:-NONE}
+WEBMIN_INIT_REFERRERS=${WEBMIN_INIT_REFERRERS:$WEBMIN_INIT_REFERERS} # Correct a misspelling but maintain backwards compatibility
 
 BIND_DATA_DIR=${DATA_DIR}/bind
 WEBMIN_DATA_DIR=${DATA_DIR}/webmin
@@ -76,7 +77,7 @@ set_webmin_redirect_port() {
 }
 
 set_webmin_referers() {
-  echo "referers=$WEBMIN_INIT_REFERERS" >> /etc/webmin/config
+  echo "referers=$WEBMIN_INIT_REFERRERS" >> /etc/webmin/config
 }
 
 set_root_passwd() {
@@ -101,7 +102,7 @@ first_init() {
     if [ "${WEBMIN_INIT_SSL_ENABLED}" == "false" ]; then
       disable_webmin_ssl
     fi
-    if [ "${WEBMIN_INIT_REFERERS}" != "NONE" ]; then
+    if [ "${WEBMIN_INIT_REFERRERS}" != "NONE" ]; then
       set_webmin_referers
     fi
     touch /data/.initialized
